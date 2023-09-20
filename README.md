@@ -23,6 +23,28 @@ Note that the v1.0.0 release is susceptible to a [high-difficulty, never-exploit
 ["Reward token ", "pool address", start date, end date, "refundee"]
 ["0x7783c490B6D12E719A4271661D6Eb03539eB9BC9","0x2d6672a0a15F01F076A50380Da7885076dAAaB61", 1695195247, 1695601743, "0x0878025B1D4362c3787121BFE7668a3fE031dB4C"]
 Token: 11647
+
+## Steps:
+- Call **createIncentive** to create new incentive
+- Approve v3NFT position for the staker contract
+- Use **safeTransferFrom** to stake nft, with data, calculate by below code
+```sh
+struct IncentiveKey {
+   address rewardToken;
+   address pool;
+   uint256 startTime;
+   uint256 endTime;
+   address refundee;
+}
+function computeUnhashedKey(IncentiveKey memory key)  public pure returns (bytes memory) {
+       return abi.encode(key);
+   }
+```
+- Now we can **getRewardInfo** to view the reward by the tokenId
+* Unstake token
+- Call **unstakeToken** first
+- Call **claimReward** to withdraw the reward token, set the **amountRequested = 0** if you want to with draw all
+- Call **withdrawToken** to withdraw the nft position
 ## Links:
 
 - [Contract Design](docs/Design.md)
